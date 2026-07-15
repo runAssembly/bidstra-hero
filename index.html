@@ -16,5 +16,28 @@
   </head>
   <body>
     <div id="root"></div>
+  <script>
+    /* Add a "Log in" link into the nav next to "Get started" (built site is compiled React;
+       inject into the real DOM after mount so layout + style match). Added by assembly-jon. */
+    (function(){
+      function add(){
+        if(document.getElementById('bidstra-login')) return true;
+        var gs=[].slice.call(document.querySelectorAll('a')).filter(function(a){return /get started/i.test((a.textContent||''));})[0];
+        if(!gs) return false;
+        var login=document.createElement('a');
+        login.id='bidstra-login';
+        login.href='https://app.merkatai.com/?product=bidstra';
+        login.textContent='Log in';
+        login.style.cssText='font:500 0.875rem/1 Inter,system-ui,sans-serif;color:#fff;opacity:.85;text-decoration:none;white-space:nowrap;transition:opacity .15s;';
+        login.onmouseenter=function(){this.style.opacity='1';};
+        login.onmouseleave=function(){this.style.opacity='.85';};
+        var wrap=document.createElement('div');
+        wrap.style.cssText='display:flex;align-items:center;gap:1.25rem;';
+        gs.parentNode.insertBefore(wrap,gs); wrap.appendChild(login); wrap.appendChild(gs);
+        return true;
+      }
+      var n=0,iv=setInterval(function(){n++; if(add()||n>60) clearInterval(iv);},100);
+    })();
+  </script>
   </body>
 </html>
